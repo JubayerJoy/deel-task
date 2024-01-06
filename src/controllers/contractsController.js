@@ -34,6 +34,18 @@ const contractController = {
       res.status(500).json({ error: "Internal Server Error" });
     }
   },
+  getNonTeminatedContractsByUser: async (req, res) => {
+    try {
+      const userId = parseInt(req.profile.id, 10);
+      const contracts = await contractService.getNonTerminatedContractsByUserId(
+        userId
+      );
+      res.json(contracts);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  },
 };
 
 module.exports = contractController;
