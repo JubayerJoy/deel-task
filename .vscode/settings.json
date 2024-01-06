@@ -1,6 +1,7 @@
 {
   // editor
   "editor.fontSize": 12,
+  "editor.tabSize": 2,
   "editor.fontFamily": "Fira Code, Operator Mono",
   "editor.fontLigatures": true,
   "editor.wordWrap": "on",
