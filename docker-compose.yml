@@ -1,0 +1,15 @@
+version: "3"
+
+services:
+  sqlite:
+    image: nouchka/sqlite3
+    volumes:
+      - ./data:/data
+
+  node-app:
+    build: .
+    ports:
+      - "3001:3001"
+    depends_on:
+      - sqlite
+    entrypoint: ./entrypoint.sh
