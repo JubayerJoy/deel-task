@@ -8,19 +8,13 @@ const adminService = {
       const startDate = new Date(start);
       const endDate = new Date(end);
 
-      if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
-        return {
-          success: false,
-          status: 400,
-          message: "Invalid date format",
-        };
-      }
+      const { valid, message } = dateUtils.validateDateRange(start, end);
 
-      if (startDate.getTime() > endDate.getTime()) {
+      if (!valid) {
         return {
           success: false,
           status: 400,
-          message: "Start date cannot be greater than end date",
+          message,
         };
       }
 
