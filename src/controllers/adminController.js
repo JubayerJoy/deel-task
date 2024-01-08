@@ -27,6 +27,30 @@ const adminController = {
       });
     }
   },
+  getBestClients: async (req, res) => {
+    try {
+      const { start, end, limit } = req.query;
+      const sequelize = req.app.get("sequelize");
+      const { success, status, message, data } =
+        await adminService.getBestClients(start, end, limit, sequelize);
+
+      if (!success) {
+        return res.status(status).json({ success, message });
+      }
+
+      res.status(status).json({
+        success,
+        message,
+        data,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  },
 };
 
 module.exports = adminController;
