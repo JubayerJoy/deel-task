@@ -23,7 +23,16 @@ const jobService = {
         },
       });
 
-      return unpaidJobs;
+      if (!unpaidJobs) {
+        return { success: false, status: 404, message: "No unpaid jobs found" };
+      }
+
+      return {
+        success: true,
+        status: 200,
+        message: "Unpaid jobs fetched successfully",
+        data: unpaidJobs,
+      };
     } catch (error) {
       console.error(error);
       throw new Error("Error fetching unpaid jobs for the user");

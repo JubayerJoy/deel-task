@@ -6,7 +6,16 @@ const jobsController = {
     try {
       const userId = parseInt(req.profile.id, 10);
       const jobs = await jobService.getUnpaidJobsByUserId(userId);
-      res.json(jobs);
+
+      if (!jobs.success) {
+        return res
+          .status(jobs.status)
+          .json({ success: false, message: jobs.message });
+      }
+
+      res
+        .status(jobs.status)
+        .json({ success: true, message: jobs.message, data: jobs.data });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
