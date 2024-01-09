@@ -27,6 +27,7 @@ API document: https://deel-task.fly.dev/api-docs
 
    ```bash
    npm install
+   npm run seed
    ```
 
 4. **Run the application:**
