@@ -43,6 +43,15 @@ const profileService = {
 
       const maxDepositLimit = totalPrice * 0.25;
 
+      if (!depositAmount) {
+        await depositTransaction.rollback();
+        return {
+          success: false,
+          status: 400,
+          message: `Deposit amount is required`,
+        };
+      }
+
       if (depositAmount > maxDepositLimit) {
         await depositTransaction.rollback();
         return {
