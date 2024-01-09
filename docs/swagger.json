@@ -1,0 +1,389 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Deel Task API"
+  },
+  "definitions": {
+    "ContractResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        }
+      }
+    },
+    "JobResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        }
+      }
+    },
+    "PaymentResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "DepositResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "BestProfessionResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "profession": {
+              "type": "string"
+            },
+            "earned": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "BestClientsResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "fullName": {
+                "type": "string"
+              },
+              "paid": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "NotFoundResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "InternalServerErrorResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "status": {
+          "type": "integer"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/contracts/{id}": {
+      "get": {
+        "summary": "Get contract by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/ContractResponse"
+          },
+          "404": {
+            "$ref": "#/definitions/NotFoundResponse"
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ]
+      }
+    },
+    "/contracts": {
+      "get": {
+        "summary": "Get non-terminated contracts by user",
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/ContractResponse"
+          },
+          "404": {
+            "$ref": "#/definitions/NotFoundResponse"
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ]
+      }
+    },
+    "/jobs/unpaid": {
+      "get": {
+        "summary": "Get all unpaid jobs for a user",
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/JobResponse"
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ]
+      }
+    },
+    "/jobs/{id}/pay": {
+      "post": {
+        "summary": "Pay for a job",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/PaymentResponse"
+          },
+          "400": {
+            "$ref": "#/definitions/ErrorResponse"
+          },
+          "404": {
+            "$ref": "#/definitions/NotFoundResponse"
+          },
+          "500": {
+            "$ref": "#/definitions/InternalServerErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ]
+      }
+    },
+    "/balances/deposit/{userId}": {
+      "post": {
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "summary": "Deposits money into the balance of a client",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          },
+          {
+            "name": "amount",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "number"
+                }
+              },
+              "required": ["amount"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/DepositResponse"
+          },
+          "400": {
+            "$ref": "#/definitions/ErrorResponse"
+          },
+          "404": {
+            "$ref": "#/definitions/NotFoundResponse"
+          },
+          "500": {
+            "$ref": "#/definitions/InternalServerErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ]
+      }
+    },
+    "/admin/best-profession": {
+      "get": {
+        "summary": "Get the best profession",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "date",
+            "default": "01-01-2020"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "date",
+            "default": "12-31-2020"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/BestProfessionResponse"
+          },
+          "400": {
+            "$ref": "#/definitions/ErrorResponse"
+          },
+          "500": {
+            "$ref": "#/definitions/InternalServerErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ]
+      }
+    },
+    "/admin/best-clients": {
+      "get": {
+        "summary": "Get the best clients",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "date",
+            "default": "01-01-2020"
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "date",
+            "default": "12-31-2020"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": true,
+            "type": "integer",
+            "default": 2
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/definitions/BestClientsResponse"
+          },
+          "400": {
+            "$ref": "#/definitions/ErrorResponse"
+          },
+          "500": {
+            "$ref": "#/definitions/InternalServerErrorResponse"
+          }
+        },
+        "security": [
+          {
+            "APIKeyHeader": []
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "APIKeyHeader": {
+      "type": "apiKey",
+      "name": "profile_id",
+      "in": "header"
+    }
+  },
+  "security": [
+    {
+      "APIKeyHeader": []
+    }
+  ]
+}
