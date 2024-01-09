@@ -27,10 +27,16 @@ Welcome to the Deel Task API project! This API provides functionalities for mana
 
    ```bash
    npm install
+   ```
+
+4. **Seed the SQLite3 database:**
+
+   ```bash
+   npm install
    npm run seed
    ```
 
-4. **Run the application:**
+5. **Run the application:**
 
    ```bash
    npm start
@@ -104,7 +110,9 @@ The Deel Task API is deployed on [Fly](https://fly.io/). To deploy your own inst
 
 ![Screenshot 1](screenshots/screenshot1.png)
 
-<!-- Add more screenshots as needed -->
+**NOTE**: For authentication, select authorize and enter `profile_id` of the intended user.
+
+![Screenshot 2](screenshots/screenshot2.png)
 
 ## Thank You!
 
