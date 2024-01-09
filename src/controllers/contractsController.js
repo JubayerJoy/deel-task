@@ -25,8 +25,9 @@ const contractController = {
     try {
       const { success, status, message, data } =
         req.contract || (await contractService.getContractById(req.params.id));
+
       if (!success) {
-        res.status(status).json({ error: message });
+        return res.status(status).json({ error: message });
       }
 
       res.status(status).json({
@@ -46,7 +47,7 @@ const contractController = {
         await contractService.getNonTerminatedContractsByUserId(userId);
 
       if (!success) {
-        res.status(status).json({ error: message });
+        return res.status(status).json({ error: message });
       }
 
       res.status(status).json({
