@@ -4,8 +4,8 @@
 
 Welcome to the Deel Task API project! This API provides functionalities for managing contracts, jobs, and profiles in the Deel system.
 
-Live Deployement: https://deel-task.fly.dev
-API document: https://deel-task.fly.dev/api-docs
+- API documentation: https://deel-task.fly.dev/api-docs
+- Live Deployement: https://deel-task.fly.dev
 
 ## How to Run
 
