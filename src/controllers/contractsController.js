@@ -6,18 +6,15 @@ const contractController = {
     try {
       const { id: contractId } = req.params;
       const userId = parseInt(req.profile.id, 10);
-      const contract = await contractService.getContractById(contractId);
+      const { data } = await contractService.getContractById(contractId);
 
-      if (!contract) {
+      if (!data) {
         return res.status(404).json({ error: "Contract not found" });
       }
 
-      if (contract.ClientId !== userId && contract.ContractorId !== userId) {
+      if (data.ClientId !== userId && data.ContractorId !== userId) {
         return res.status(403).json({ error: "Access forbidden" });
       }
-
-      req.contract = contract;
-
       next();
     } catch (error) {
       console.error(error);
@@ -26,9 +23,17 @@ const contractController = {
   },
   getContractById: async (req, res) => {
     try {
-      const contract =
+      const { success, status, message, data } =
         req.contract || (await contractService.getContractById(req.params.id));
-      res.json(contract);
+      if (!success) {
+        res.status(status).json({ error: message });
+      }
+
+      res.status(status).json({
+        success,
+        message,
+        data,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -37,10 +42,18 @@ const contractController = {
   getNonTeminatedContractsByUser: async (req, res) => {
     try {
       const userId = parseInt(req.profile.id, 10);
-      const contracts = await contractService.getNonTerminatedContractsByUserId(
-        userId
-      );
-      res.json(contracts);
+      const { success, status, message, data } =
+        await contractService.getNonTerminatedContractsByUserId(userId);
+
+      if (!success) {
+        res.status(status).json({ error: message });
+      }
+
+      res.status(status).json({
+        success,
+        message,
+        data,
+      });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
